@@ -38,12 +38,18 @@ class RequestMovieScreen extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              ProfileTextInput(
-                label: "",
-                onChanged: (value) => controller.id = value,
+              InkWell(
+                onTap: () => controller.focusNodes[0].requestFocus(),
+                child: ProfileTextInput(
+                  label: "",
+                  focusNode: controller.focusNodes[0],
+                  onSubmit: (_) => controller.focusNodes[1].requestFocus(),
+                  onChanged: (value) => controller.id = value,
+                ),
               ),
               InkWell(
                 onTap: controller.requestMovie,
+                focusNode: controller.focusNodes[1],
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.symmetric(vertical: 10),

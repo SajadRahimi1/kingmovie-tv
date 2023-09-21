@@ -40,7 +40,7 @@ class FavoritesScreen extends StatelessWidget {
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 5),
                       width: MediaQuery.sizeOf(context).width,
-                      height: MediaQuery.sizeOf(context).height / 8,
+                      height: MediaQuery.sizeOf(context).height / 4,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: const Color(0xff26313e))),
@@ -68,19 +68,22 @@ class FavoritesScreen extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(color: Colors.white),
                           )),
+                          /*
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.delete,
-                                color: redColor,
+                            child: Material(
+                              child: InkWell(
+                                child: const Icon(
+                                  Icons.delete,
+                                  color: redColor,
+                                ),
+                                onTap: () => controller.removeFavorite(
+                                    controller.favoriteModel?.data?.list?[index]
+                                            .id ??
+                                        ""),
                               ),
-                              onPressed: () => controller.removeFavorite(
-                                  controller.favoriteModel?.data?.list?[index]
-                                          .id ??
-                                      ""),
                             ),
-                          )
+                          )*/
                         ],
                       ),
                     ),

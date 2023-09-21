@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart'show FocusNode;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:king_movie/core/services/message_service.dart';
@@ -9,6 +10,8 @@ class RequestMovieViewModel extends GetxController with StateMixin {
   String token = '';
   String id = '';
   RequestMovieModel? movieModel;
+
+  List<FocusNode> focusNodes = List.generate(2, (index) => FocusNode());
 
   @override
   void onInit() async {
