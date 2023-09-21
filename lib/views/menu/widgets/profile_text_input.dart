@@ -7,10 +7,11 @@ class ProfileTextInput extends StatelessWidget {
       required this.label,
       this.textEditingController,
       this.isEnable = true,
-      this.onChanged});
+      this.onChanged, this.focusNode, this.onSubmit});
   final String label;
   final TextEditingController? textEditingController;
-  final void Function(String)? onChanged;
+  final void Function(String)? onChanged,onSubmit;
+  final FocusNode? focusNode;
   final bool isEnable;
 
   @override
@@ -24,6 +25,8 @@ class ProfileTextInput extends StatelessWidget {
           enabled: isEnable,
           onChanged: onChanged,
           controller: textEditingController,
+          onFieldSubmitted: onSubmit,
+          focusNode: focusNode,
           style: const TextStyle(color: Colors.white, fontSize: 12),
           decoration: InputDecoration(
             fillColor: blackColor,

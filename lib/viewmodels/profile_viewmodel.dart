@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show FocusNode;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:king_movie/core/constants/singleton_class.dart';
@@ -9,6 +10,7 @@ import 'package:king_movie/models/user_model.dart';
 class ProfileViewModel extends GetxController {
   final GetStorage getStorage = GetStorage();
   String token = '';
+  List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
 
   SingletonClass singletonClass = SingletonClass.instance;
 

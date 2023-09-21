@@ -31,43 +31,34 @@ class ProfileScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.sizeOf(context).width / 25),
         child: ListView(children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: MediaQuery.sizeOf(context).height / 45),
-            child: Center(
-              child: CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: MediaQuery.sizeOf(context).width / 5.5,
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Icon(
-                    Icons.change_circle,
-                    size: MediaQuery.sizeOf(context).width / 10,
-                    color: redColor,
-                  ),
-                ),
-              ),
-            ),
-          ),
           ProfileTextInput(
             label: "ایمیل",
             textEditingController: TextEditingController(
                 text: controller.singletonClass.user?.email),
             isEnable: false,
           ),
-          ProfileTextInput(
-            label: "موبایل",
-            textEditingController: TextEditingController(
-                text: controller.singletonClass.user?.mobile),
-            onChanged: (value) => controller.userModel.mobile = value,
-          ),
-          ProfileTextInput(
-            label: "نام و نام خانوادگی",
-            textEditingController: TextEditingController(
-                text: controller.singletonClass.user?.name),
-            onChanged: (value) => controller.userModel.name = value,
-          ),
           InkWell(
+              onTap: () => controller.focusNodes[0].requestFocus(),
+              child: ProfileTextInput(
+                label: "موبایل",
+                onSubmit: (_) => controller.focusNodes[1].requestFocus(),
+                focusNode: controller.focusNodes[0],
+                textEditingController: TextEditingController(
+                    text: controller.singletonClass.user?.mobile),
+                onChanged: (value) => controller.userModel.mobile = value,
+              )),
+          InkWell(
+              onTap: () => controller.focusNodes[1].requestFocus(),
+              child: ProfileTextInput(
+                label: "نام و نام خانوادگی",
+                focusNode: controller.focusNodes[1],
+                onSubmit: (_) => controller.focusNodes[4].requestFocus(),
+                textEditingController: TextEditingController(
+                    text: controller.singletonClass.user?.name),
+                onChanged: (value) => controller.userModel.name = value,
+              )),
+          InkWell(
+            focusNode: controller.focusNodes[4],
             onTap: controller.updateInformation,
             child: Container(
               padding: const EdgeInsets.all(10),
@@ -89,16 +80,26 @@ class ProfileScreen extends StatelessWidget {
               style: TextStyle(color: Color(0xff5f5f5f)),
             ),
           ),
-          ProfileTextInput(
-            label: "رمز عبور جدید",
-            onChanged: (value) => controller.password = value,
-          ),
-          ProfileTextInput(
-            label: "تکرار رمز عبور",
-            onChanged: (value) => controller.repassword = value,
+          InkWell(
+            onTap: () => controller.focusNodes[2].requestFocus(),
+            child: ProfileTextInput(
+              label: "رمز عبور جدید",
+              focusNode: controller.focusNodes[2],
+              onSubmit: (_) => controller.focusNodes[3].requestFocus(),
+              onChanged: (value) => controller.password = value,
+            ),
           ),
           InkWell(
+              onTap: () => controller.focusNodes[3].requestFocus(),
+              child: ProfileTextInput(
+                label: "تکرار رمز عبور",
+                onSubmit: (_) => controller.focusNodes[5].requestFocus(),
+                focusNode: controller.focusNodes[3],
+                onChanged: (value) => controller.repassword = value,
+              )),
+          InkWell(
             onTap: controller.updatePassword,
+            focusNode: controller.focusNodes[5],
             child: Container(
               padding: const EdgeInsets.all(8),
               margin: EdgeInsets.symmetric(
