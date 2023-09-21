@@ -8,19 +8,9 @@ AppBar homeAppBar({required BuildContext context}) => AppBar(
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
-      actions: const [
-        InkWell(
-          child: Padding(
-            padding: EdgeInsets.only(left: 8.0),
-            child: Icon(
-              Icons.public,
-            ),
-          ),
-        )
-      ],
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Colors.white,
-        size: MediaQuery.sizeOf(context).width / 13,
+        // size: MediaQuery.sizeOf(context).width / 13,
       ),
       leading: Builder(builder: (context) {
         return InkWell(
