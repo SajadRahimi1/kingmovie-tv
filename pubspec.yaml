@@ -1,0 +1,51 @@
+name: king_movie
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+
+dependencies:
+  carousel_slider: ^4.2.1
+  dio: ^5.3.2
+  flutter:
+    sdk: flutter
+  flutter_spinkit: ^5.2.0
+  get: ^4.6.5
+  get_storage: ^2.1.1
+  persian_number_utility: ^1.1.3
+  shamsi_date: ^1.0.1
+  url_launcher: ^6.1.12
+  media_kit: ^1.1.7
+  media_kit_video: ^1.1.8
+  media_kit_libs_video: ^1.0.1
+  flutter_easyloading: ^3.0.5
+  android_intent_plus: ^4.0.2
+  device_apps: ^2.2.0
+  flutter_typeahead: ^4.7.0
+  dpad_container: ^2.0.4
+  scroll_to_index: ^3.0.1
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+  
+  assets:
+    - assets/pictures/images/
+    - assets/pictures/icons/
+    - assets/
+
+  fonts:
+    - family: Sans
+      fonts:
+        - asset: assets/fonts/sans.ttf
