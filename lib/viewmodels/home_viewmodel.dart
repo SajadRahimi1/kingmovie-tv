@@ -5,6 +5,7 @@ import 'package:king_movie/core/services/home_service.dart' as service;
 import 'package:king_movie/core/services/search_service.dart';
 import 'package:king_movie/models/home_model.dart';
 import 'package:king_movie/models/search_model.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:shamsi_date/shamsi_date.dart';
 
 class HomeViewModel extends GetxController with StateMixin {
@@ -12,17 +13,19 @@ class HomeViewModel extends GetxController with StateMixin {
   String searchValue = '';
 
   final GetStorage getStorage = GetStorage();
+  final AutoScrollController newSeriesController = AutoScrollController(),
+      newMoviesController = AutoScrollController(),
+      newDubMoviesController = AutoScrollController(),
+      newDubSeriesController = AutoScrollController(),mainScrollController = AutoScrollController();
   String token = '';
 
-  int newTabIndex = 0;
-  int newDubTabIndex = 0;
+  int mainScrollIndex = 0;
 
   @override
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
     await GetStorage.init();
-
     print(token);
     await getData();
   }

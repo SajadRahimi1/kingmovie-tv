@@ -7,10 +7,10 @@ import 'package:king_movie/core/widgets/menu.dart';
 import 'package:king_movie/models/search_model.dart';
 import 'package:king_movie/viewmodels/home_viewmodel.dart';
 import 'package:king_movie/views/home/screens/search_screen.dart';
-import 'package:king_movie/views/home/screens/show_all_screen.dart';
 import 'package:king_movie/views/home/widgets/advance_search_dialog.dart';
 import 'package:king_movie/views/home/widgets/new_movie_widget.dart';
 import 'package:king_movie/views/movie_detail/screens/movie_detail_screen.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key, this.isLogedIn = false});
@@ -28,7 +28,8 @@ class MainScreen extends StatelessWidget {
       appBar: homeAppBar(context: context),
       drawer: const Menu(),
       body: controller.obx(
-        (status) => ListView(children: [
+        (status) =>
+            ListView(controller: controller.mainScrollController, children: [
           // search text form field
           Padding(
             padding: EdgeInsets.symmetric(
@@ -194,90 +195,119 @@ class MainScreen extends StatelessWidget {
             height: Get.height / 20,
           ),
 
-          // new series and movies
-          Container(
-            width: Get.width,
-            height: Get.height / 2.3,
-            color: darkBlue,
-            child: DefaultTabController(
-              length: 2,
-              child: Column(children: [
-                InkWell(
-                  onFocusChange: (value) => print("tab focus $value"),
-                  child: TabBar(
-                    onTap: (index) => controller.newTabIndex = index,
-                    tabs: const [
-                      Tab(
-                        text: "سریال های بروز شده",
-                      ),
-                      Tab(
-                        text: "فیلم های بروز شده",
-                      ),
-                    ],
-                    indicatorColor: yellowColor,
-                  ),
-                ),
-                Expanded(
-                  child: TabBarView(children: [
-                    ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.homeModel?.data?.series?.length,
-                        itemBuilder: (_, listIndex) => Material(
-                              child: InkWell(
-                                onTap: () {},
-                                child: NewMovieWidget(
-                                  model: controller
-                                      .homeModel?.data?.series?[listIndex]
-                                      .toWidgetModel(),
-                                ),
-                              ),
-                            )),
-                    ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: controller.homeModel?.data?.movie?.length,
-                        itemBuilder: (_, listIndex) => NewMovieWidget(
-                              model: controller
-                                  .homeModel?.data?.movie?[listIndex]
-                                  .toWidgetModel(),
-                            )),
-                  ]),
-                ),
-                SizedBox(
-                  width: Get.width / 7,
-                  child: Material(
-                    color: darkBlue,
-                    child: InkWell(
-                      onFocusChange: (value) => print("show all $value"),
-                      onTap: () => Get.to(() => ShowAllScreen(
-                            isMovie: controller.newTabIndex == 1,
-                          )),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "مشاهده همه\t",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.white,
-                            size: Get.width / 22,
-                          )
-                        ],
+          // new series
+          AutoScrollTag(
+            controller: controller.mainScrollController,
+            key: const ValueKey(4),
+            index: 4,
+            child: Container(
+                width: Get.width,
+                height: Get.height / 2.1,
+                color: darkBlue,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "سریال های بروز شده",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: Get.height / 45,
-                )
-              ]),
-            ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount:
+                                controller.homeModel?.data?.series?.length ?? 0,
+                            controller: controller.newSeriesController,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_, index) => AutoScrollTag(
+                                  controller: controller.newSeriesController,
+                                  key: ValueKey(index),
+                                  index: index,
+                                  highlightColor: Colors.green,
+                                  child: NewMovieWidget(
+                                    model: controller
+                                        .homeModel?.data?.series?[index]
+                                        .toWidgetModel(),
+                                    onFocus: (isFocus) {
+                                      if (isFocus) {
+                                        if (controller.mainScrollIndex != 4) {
+                                          controller.mainScrollIndex = 4;
+                                          controller.mainScrollController
+                                              .scrollToIndex(4,
+                                                  duration: const Duration(
+                                                      milliseconds: 300));
+                                        }
+                                        controller.newSeriesController
+                                            .scrollToIndex(index,
+                                                duration: const Duration(
+                                                    milliseconds: 300));
+                                      }
+                                    },
+                                  ),
+                                )))
+                  ],
+                )),
+          ),
+
+          // new movies
+          AutoScrollTag(
+            controller: controller.mainScrollController,
+            key: const ValueKey(5),
+            index: 5,
+            child: Container(
+                width: Get.width,
+                height: Get.height / 2.1,
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                color: darkBlue,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "فیلم های بروز شده",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount:
+                                controller.homeModel?.data?.series?.length ?? 0,
+                            controller: controller.newMoviesController,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_, index) => AutoScrollTag(
+                                  controller: controller.newMoviesController,
+                                  key: ValueKey(index),
+                                  index: index,
+                                  highlightColor: Colors.green,
+                                  child: NewMovieWidget(
+                                    model: controller
+                                        .homeModel?.data?.movie?[index]
+                                        .toWidgetModel(),
+                                    onFocus: (isFocus) {
+                                      if (isFocus) {
+                                        if (controller.mainScrollIndex != 5) {
+                                          controller.mainScrollIndex = 5;
+                                          controller.mainScrollController
+                                              .scrollToIndex(5,
+                                                  duration: const Duration(
+                                                      milliseconds: 300));
+                                        }
+                                        controller.newMoviesController
+                                            .scrollToIndex(index,
+                                                duration: const Duration(
+                                                    milliseconds: 300));
+                                      }
+                                    },
+                                  ),
+                                )))
+                  ],
+                )),
           ),
 
           // box office
+          /*
           Container(
             width: Get.width,
             height: Get.height / 2.2,
@@ -366,6 +396,7 @@ class MainScreen extends StatelessWidget {
           SizedBox(
             height: Get.height / 20,
           ),
+          */
 
           // Time line
           /*
@@ -636,76 +667,116 @@ class MainScreen extends StatelessWidget {
             height: Get.height / 35,
           ),
 
-          // new dub series and movies
-          Container(
-            width: Get.width,
-            height: Get.height / 2.3,
-            color: darkBlue,
-            child: DefaultTabController(
-              length: 2,
-              child: Column(children: [
-                TabBar(
-                  labelStyle: TextStyle(
-                      fontSize: 16 * MediaQuery.of(context).textScaleFactor),
-                  onTap: (index) => controller.newDubTabIndex = index,
-                  tabs: const [
-                    Tab(
-                      text: "سریال های دوبله بروز شده",
-                    ),
-                    Tab(
-                      text: "فیلم های دوبله بروز شده",
-                    )
-                  ],
-                  indicatorColor: yellowColor,
-                ),
-                Expanded(
-                  child: TabBarView(children: [
-                    ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount:
-                            controller.homeModel?.data?.seriesDouble?.length,
-                        itemBuilder: (_, listIndex) => NewMovieWidget(
-                              model: controller
-                                  .homeModel?.data?.seriesDouble?[listIndex]
-                                  .toWidgetModel(),
-                            )),
-                    ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount:
-                            controller.homeModel?.data?.movieDouble?.length ??
-                                0,
-                        itemBuilder: (_, listIndex) => NewMovieWidget(
-                              model: controller
-                                  .homeModel?.data?.movieDouble?[listIndex]
-                                  .toWidgetModel(),
-                            )),
-                  ]),
-                ),
-                InkWell(
-                  onTap: () => Get.to(() => ShowAllScreen(
-                      isMovie: controller.newDubTabIndex == 1, dub: true)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "مشاهده همه\t",
+          // new dub series
+          AutoScrollTag(
+            controller: controller.mainScrollController,
+            key: const ValueKey(6),
+            index: 6,
+            child: Container(
+                width: Get.width,
+                height: Get.height / 2.1,
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                color: darkBlue,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "سریال های دوبله بروز شده",
                         style: TextStyle(color: Colors.white),
                       ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.white,
-                        size: Get.width / 22,
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: Get.height / 45,
-                )
-              ]),
-            ),
+                    ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount:
+                                controller.homeModel?.data?.series?.length ?? 0,
+                            controller: controller.newDubSeriesController,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_, index) => AutoScrollTag(
+                                  controller: controller.newDubSeriesController,
+                                  key: ValueKey(index),
+                                  index: index,
+                                  highlightColor: Colors.green,
+                                  child: NewMovieWidget(
+                                    model: controller
+                                        .homeModel?.data?.seriesDouble?[index]
+                                        .toWidgetModel(),
+                                    onFocus: (isFocus) {
+                                      if (isFocus) {
+                                        if (controller.mainScrollIndex != 6) {
+                                          controller.mainScrollIndex = 6;
+                                          controller.mainScrollController
+                                              .scrollToIndex(6,
+                                                  duration: const Duration(
+                                                      milliseconds: 300));
+                                        }
+                                        controller.newDubSeriesController
+                                            .scrollToIndex(index,
+                                                duration: const Duration(
+                                                    milliseconds: 300));
+                                      }
+                                    },
+                                  ),
+                                )))
+                  ],
+                )),
+          ),
+
+          // new dub movies
+          AutoScrollTag(
+            controller: controller.mainScrollController,
+            key: const ValueKey(7),
+            index: 7,
+            child: Container(
+                width: Get.width,
+                height: Get.height / 2.1,
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                color: darkBlue,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "فیلم های دوبله بروز شده",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount:
+                                controller.homeModel?.data?.series?.length ?? 0,
+                            controller: controller.newDubMoviesController,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_, index) => AutoScrollTag(
+                                  controller: controller.newDubMoviesController,
+                                  key: ValueKey(index),
+                                  index: index,
+                                  highlightColor: Colors.green,
+                                  child: NewMovieWidget(
+                                    model: controller
+                                        .homeModel?.data?.seriesDouble?[index]
+                                        .toWidgetModel(),
+                                    onFocus: (isFocus) {
+                                      if (isFocus) {
+                                        if (controller.mainScrollIndex != 7) {
+                                          controller.mainScrollIndex = 7;
+                                          controller.mainScrollController
+                                              .scrollToIndex(7,
+                                                  duration: const Duration(
+                                                      milliseconds: 300));
+                                        }
+                                        controller.newDubMoviesController
+                                            .scrollToIndex(index,
+                                                duration: const Duration(
+                                                    milliseconds: 300));
+                                      }
+                                    },
+                                  ),
+                                )))
+                  ],
+                )),
           ),
 
           SizedBox(
