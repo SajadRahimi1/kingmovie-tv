@@ -756,7 +756,7 @@ class MainScreen extends StatelessWidget {
                                   highlightColor: Colors.green,
                                   child: NewMovieWidget(
                                     model: controller
-                                        .homeModel?.data?.seriesDouble?[index]
+                                        .homeModel?.data?.movieDouble?[index]
                                         .toWidgetModel(),
                                     onFocus: (isFocus) {
                                       if (isFocus) {

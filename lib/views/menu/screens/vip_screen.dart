@@ -29,7 +29,7 @@ class VipScreen extends StatelessWidget {
             )),
       ),
       backgroundColor: darkBlue,
-      body: controller.obx((state) => Column(children: [
+      body: controller.obx((state) => ListView(children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: SizedBox(
@@ -96,36 +96,33 @@ class VipScreen extends StatelessWidget {
                 thickness: 2,
               ),
             ),
-            Expanded(
-              child: Theme(
-                data: Theme.of(context).copyWith(
-                  unselectedWidgetColor: redColor,
-                ),
-                child: ListView.builder(
-                    itemCount: controller.homeModel?.pack?.length ?? 0,
-                    itemBuilder: (_, index) => Obx(() => ListTile(
-                          onTap: () => planSelected.value = index,
-                          leading: Radio(
-                            activeColor: Colors.white,
-                            value: planSelected.value,
-                            groupValue: index,
-                            onChanged: <int>(value) {},
-                          ),
-                          title: Text(
-                            controller.homeModel?.pack?[index].title ?? "",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ))),
-              ),
+            Column(
+              children: List.generate(
+                  controller.homeModel?.pack?.length ?? 0,
+                  (index) => Obx(() => ListTile(
+                        onTap: () => planSelected.value = index,
+                        leading: Radio(
+                          activeColor: Colors.white,
+                          value: planSelected.value,
+                          groupValue: index,
+                          onChanged: <int>(value) => planSelected.value = index,
+                        ),
+                        title: Text(
+                          controller.homeModel?.pack?[index].title ?? "",
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ))),
             ),
             InkWell(
               onTap: () async {
                 await controller.buy(
                     controller.homeModel?.pack?[planSelected.value].id ?? 0);
               },
+              // focusColor: Colors.green,
               child: Container(
                 alignment: Alignment.center,
-                width: MediaQuery.sizeOf(context).width,
+                margin: EdgeInsets.symmetric(horizontal: Get.width / 20),
+                // width: MediaQuery.sizeOf(context).width,
                 height: MediaQuery.sizeOf(context).height / 12,
                 decoration: const BoxDecoration(
                     color: redColor,
