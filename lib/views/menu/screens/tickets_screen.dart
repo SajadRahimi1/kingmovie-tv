@@ -62,7 +62,7 @@ class TicketsScreen extends StatelessWidget {
                           code:
                               controller.ticketModel?.data?.list?[index].code ??
                                   "",
-                                  token: controller.token,
+                          token: controller.token,
                         )),
                     child: Container(
                       width: MediaQuery.sizeOf(context).width,
@@ -111,17 +111,29 @@ class TicketsScreen extends StatelessWidget {
               Obx(() => controller.isClickNew.value
                   ? Column(
                       children: [
-                        ProfileTextInput(
-                          label: "عنوان تیکت جدید",
-                          onChanged: (value) => controller.ticketTitle = value,
-                        ),
+                        InkWell(
+                            onTap: () =>
+                                controller.focusNodes[0].requestFocus(),
+                            child: ProfileTextInput(
+                              focusNode: controller.focusNodes[0],
+                              onSubmit: (_) =>
+                                  controller.focusNodes[1].requestFocus(),
+                              label: "عنوان تیکت جدید",
+                              onChanged: (value) =>
+                                  controller.ticketTitle = value,
+                            )),
                         const SizedBox(
                           height: 10,
                         ),
-                        ProfileTextInput(
-                          label: "متن پیام",
-                          onChanged: (value) => controller.ticketText = value,
-                        ),
+                        InkWell(
+                            onTap: () =>
+                                controller.focusNodes[1].requestFocus(),
+                            child: ProfileTextInput(
+                              focusNode: controller.focusNodes[1],
+                              label: "متن پیام",
+                              onChanged: (value) =>
+                                  controller.ticketText = value,
+                            )),
                       ],
                     )
                   : const SizedBox()),
@@ -133,6 +145,7 @@ class TicketsScreen extends StatelessWidget {
                     await controller.newTicket();
                   } else {
                     controller.isClickNew.value = true;
+                    controller.focusNodes[0].requestFocus();
                   }
                 },
                 child: Container(
