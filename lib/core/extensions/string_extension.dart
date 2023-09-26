@@ -19,4 +19,6 @@ extension DownloadColor on String? {
 
     return htmlText.replaceAll(exp, '');
   }
+
+  
 }

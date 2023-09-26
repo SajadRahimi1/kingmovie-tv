@@ -1,0 +1,193 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:king_movie/models/movie_model.dart';
+import 'package:king_movie/viewmodels/play_movie_viewmodel.dart';
+import 'package:king_movie/views/movie_detail/widgets/setting_bottom_sheet.dart';
+import 'package:king_movie/views/movie_detail/widgets/top_video_widget.dart';
+import 'package:media_kit_video/media_kit_video.dart';
+
+class PlayMovieScreen extends StatefulWidget {
+  const PlayMovieScreen({super.key, required this.downloadList});
+  final DownloadList? downloadList;
+
+  @override
+  State<PlayMovieScreen> createState() => _PlayMovieScreenState();
+}
+
+class _PlayMovieScreenState extends State<PlayMovieScreen> {
+  late PlayMovieViewModel controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+
+    controller = Get.put(PlayMovieViewModel(widget.downloadList));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+
+    controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        color: Colors.black,
+        padding: const EdgeInsets.only(bottom: 5),
+        child: RawKeyboardListener(
+            focusNode: controller.movieFocusNode,
+            onKey: (RawKeyEvent event) async {
+              if (event is RawKeyDownEvent &&
+                  event.data is RawKeyEventDataAndroid) {
+                RawKeyEventDataAndroid data =
+                    event.data as RawKeyEventDataAndroid;
+
+                if (data.keyCode == 19) {
+                  // Up arrow tapped
+                  controller.subtitleFocusNode.requestFocus();
+                } else if (data.keyCode == 20) {
+                  // Down arrow tapped
+                  controller.sliderFocusNode.requestFocus();
+                } else if (data.keyCode == 21) {
+                  // Left
+                  if (controller.sliderFocusNode.hasFocus) {
+                    controller.isSlider = true;
+                    controller.moviePostion.value += 10;
+                  }
+                } else if (data.keyCode == 22) {
+                  // Right
+                  if (controller.sliderFocusNode.hasFocus) {
+                    controller.isSlider = true;
+                    controller.moviePostion.value -= 10;
+                  }
+                } else if (data.keyCode == 23) {
+                  // Center
+                  controller.movieFocusNode.requestFocus();
+                }
+              } else if (event is RawKeyUpEvent &&
+                  event.data is RawKeyEventDataAndroid) {
+                RawKeyEventDataAndroid data =
+                    event.data as RawKeyEventDataAndroid;
+                if (data.keyCode == 21) {
+                  // Left
+                  if (controller.sliderFocusNode.hasFocus) {
+                    controller.moviePostion.value =
+                        controller.moviePostion.toInt();
+                    await controller.player.pause();
+                    await controller.player.seek(
+                        Duration(seconds: controller.moviePostion.toInt()));
+                    await controller.player.play();
+                    controller.isSlider = false;
+                  }
+                }
+                if (data.keyCode == 22) {
+                  // Left
+                  if (controller.sliderFocusNode.hasFocus) {
+                    controller.moviePostion.value =
+                        controller.moviePostion.toInt();
+                    await controller.player.pause();
+                    await controller.player.seek(
+                        Duration(seconds: controller.moviePostion.toInt()));
+                    await controller.player.play();
+                    controller.isSlider = false;
+                  }
+                }
+              }
+            },
+            child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Stack(
+                  children: [
+                    Obx(() => Video(
+                        controller: controller.controller,
+                        subtitleViewConfiguration:
+                            controller.subtitleViewConfiguration.value)),
+                    SizedBox(
+                      width: Get.width,
+                      height: Get.height,
+                      child: Column(children: [
+                        Row(
+                          children: [
+                            const Spacer(),
+                            SubtitleWidget(player: controller.player),
+                            AudioWidget(player: controller.player),
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  focusColor: Colors.red,
+                                  focusNode: controller.subtitleFocusNode,
+                                  onTap: () async {
+                                    TextStyle? subtitleStyle =
+                                        await showModalBottomSheet(
+                                            context: context,
+                                            builder: (context) =>
+                                                const SettingBottomSheet());
+                                    if (subtitleStyle != null) {
+                                      controller
+                                              .subtitleViewConfiguration.value =
+                                          SubtitleViewConfiguration(
+                                              style: subtitleStyle);
+                                    }
+                                  },
+                                  child: const Icon(
+                                    Icons.settings,
+                                    color: Colors.white,
+                                  )),
+                            ),
+                            IconButton(
+                                onPressed: () => Get.back(),
+                                icon: const Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white,
+                                )),
+                          ],
+                        ),
+                        const Spacer(),
+                        Obx(() => Text(
+                              "${controller.position.value} / ${controller.duration.value}",
+                              style: const TextStyle(color: Colors.white),
+                            )),
+                        SizedBox(
+                          width: Get.width,
+                          height: Get.height / 20,
+                          child: Obx(() => MediaQuery(
+                                data: const MediaQueryData(
+                                  navigationMode: NavigationMode.directional,
+                                ),
+                                child: Slider(
+                                  focusNode: controller.sliderFocusNode,
+                                  min: 0,
+                                  max: 4600,
+                                  value:
+                                      controller.moviePostion.value.toDouble(),
+                                  onChanged: (value) async {},
+                                  onChangeEnd: (value) async {
+                                    controller.isSlider = true;
+                                    controller.moviePostion.value =
+                                        value.toInt();
+                                    await controller.player.pause();
+                                    await controller.player
+                                        .seek(Duration(seconds: value.toInt()));
+                                    await controller.player.play();
+                                    controller.isSlider = false;
+                                  },
+                                ),
+                              )),
+                        )
+                      ]),
+                    )
+                  ],
+                ))),
+      ),
+    );
+  }
+}

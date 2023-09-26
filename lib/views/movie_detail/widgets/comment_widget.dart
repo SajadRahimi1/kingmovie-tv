@@ -30,7 +30,7 @@ class CommentWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: CircleAvatar(
-                    radius: MediaQuery.sizeOf(context).width / 15,
+                    radius: 25,
                     backgroundImage: NetworkImage(commentModel?.avatar ?? ""),
                   ),
                 ),
@@ -51,7 +51,7 @@ class CommentWidget extends StatelessWidget {
                     ),
                     // comment body
                     SizedBox(
-                      width: MediaQuery.sizeOf(context).width / 1.4,
+                      width: MediaQuery.sizeOf(context).width / 1.8,
                       child: Text(
                         commentModel?.text ?? "",
                         textAlign: TextAlign.justify,
@@ -114,12 +114,12 @@ class CommentWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: SizedBox(
-              width: MediaQuery.sizeOf(context).width / 3,
+              width: MediaQuery.sizeOf(context).width / 5,
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CircleAvatar(
-                      radius: MediaQuery.sizeOf(context).width / 28,
+                      radius: 16,
                       backgroundColor: const Color(0xff7a7a9e),
                       child: Center(
                           child: Text(
@@ -144,7 +144,7 @@ class CommentWidget extends StatelessWidget {
                           color: Color(0xffffffff),
                         )),
                     CircleAvatar(
-                        radius: MediaQuery.sizeOf(context).width / 28,
+                        radius: 16,
                         backgroundColor: const Color(0xff7a7a9e),
                         child: Center(
                             child: Text(
@@ -195,7 +195,7 @@ class ReplyCommentWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: CircleAvatar(
-                    radius: MediaQuery.sizeOf(context).width / 15,
+                    radius: 25,
                     backgroundImage: NetworkImage(commentModel?.avatar ?? ""),
                   ),
                 ),
@@ -281,12 +281,12 @@ class ReplyCommentWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: SizedBox(
-              width: MediaQuery.sizeOf(context).width / 3,
+              width: MediaQuery.sizeOf(context).width / 5,
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CircleAvatar(
-                      radius: MediaQuery.sizeOf(context).width / 28,
+                      radius: 16,
                       backgroundColor: const Color(0xff7a7a9e),
                       child: Center(
                           child: Text(
@@ -311,7 +311,7 @@ class ReplyCommentWidget extends StatelessWidget {
                           color: Color(0xffffffff),
                         )),
                     CircleAvatar(
-                        radius: MediaQuery.sizeOf(context).width / 28,
+                        radius: 16,
                         backgroundColor: const Color(0xff7a7a9e),
                         child: Center(
                             child: Text(
@@ -362,7 +362,7 @@ class SecondReplyWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: CircleAvatar(
-                    radius: MediaQuery.sizeOf(context).width / 15,
+                    radius: 25,
                     backgroundImage: NetworkImage(commentModel?.avatar ?? ""),
                   ),
                 ),
@@ -450,10 +450,10 @@ class SecondReplyWidget extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.sizeOf(context).width / 3,
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CircleAvatar(
-                      radius: MediaQuery.sizeOf(context).width / 28,
+                      radius: 16,
                       backgroundColor: const Color(0xff7a7a9e),
                       child: Center(
                           child: Text(
@@ -478,7 +478,7 @@ class SecondReplyWidget extends StatelessWidget {
                           color: Color(0xffffffff),
                         )),
                     CircleAvatar(
-                        radius: MediaQuery.sizeOf(context).width / 28,
+                        radius: 16,
                         backgroundColor: const Color(0xff7a7a9e),
                         child: Center(
                             child: Text(

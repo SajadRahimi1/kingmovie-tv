@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart'
-    show Colors, Curves, ScrollController, TextEditingController, TextStyle;
+    show Colors, Curves, FocusNode, TextEditingController, TextStyle;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:king_movie/core/services/message_service.dart';
@@ -28,6 +28,7 @@ class MovieViewModel extends GetxController with StateMixin {
   Rx<String> replyId = "".obs;
   Timer? timer;
   int? movieDuration;
+  final FocusNode focusNode = FocusNode(),downloadFocus=FocusNode(),castFocus=FocusNode(),commentFocus=FocusNode();
 
   late final player = Player();
   // Create a [VideoController] to handle video output from [Player].
@@ -54,7 +55,7 @@ class MovieViewModel extends GetxController with StateMixin {
     token = getStorage.read('token') ?? "";
     print('$token:$movieId');
 
-    player.stream.position.listen((event) async {
+    /* player.stream.position.listen((event) async {
       if (event.inSeconds > 10) {
         timer ??= Timer.periodic(const Duration(seconds: 3), (_) async {
           int playingSecond = player.state.position.inSeconds;
@@ -70,9 +71,10 @@ class MovieViewModel extends GetxController with StateMixin {
         await player.seek(Duration(seconds: movieDuration ?? 0));
         isSeek = false;
       }
-    });
-
+    });x
+*/
     await getData();
+    focusNode.requestFocus();
   }
 
   @override

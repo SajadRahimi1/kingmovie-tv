@@ -34,7 +34,7 @@ class SeriesDialog extends StatelessWidget {
                               (downloadList?.list?[index].list?.length ?? 0) < 2
                                   ? MediaQuery.sizeOf(context).height / 5
                                   : MediaQuery.sizeOf(context).height /
-                                      12 *
+                                      8 *
                                       (downloadList
                                               ?.list?[index].list?.length ??
                                           1),
@@ -58,56 +58,24 @@ class SeriesDialog extends StatelessWidget {
                                 children: List.generate(
                                   downloadList?.list?[index].list?.length ?? 0,
                                   (secondIndex) => ListTile(
+                                    onTap: () {
+                                      Get.back();
+                                      initVideo(downloadList
+                                          ?.list?[index].list?[secondIndex]);
+                                    },
                                     textColor: Colors.white,
                                     iconColor: Colors.white,
                                     titleTextStyle:
                                         const TextStyle(fontSize: 16),
-                                    trailing: SizedBox(
-                                      width:
-                                          MediaQuery.sizeOf(context).width / 6,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          downloadList
-                                                      ?.list?[index]
-                                                      .list?[secondIndex]
-                                                      .format ==
-                                                  'movie'
-                                              ? InkWell(
-                                                  onTap: () {
-                                                    Get.back();
-                                                    initVideo(downloadList
-                                                        ?.list?[index]
-                                                        .list?[secondIndex]);
-                                                  },
-                                                  child: Icon(
-                                                    Icons.play_circle,
-                                                    color: Colors.blue,
-                                                    size: MediaQuery.sizeOf(
-                                                                context)
-                                                            .width /
-                                                        14,
-                                                  ),
-                                                )
-                                              : const SizedBox(),
-                                          const SizedBox(width: 10),
-                                          InkWell(
-                                            onTap: () {
-                                              download(downloadList
-                                                  ?.list?[index]
-                                                  .list?[secondIndex]);
-                                            },
-                                            child: const Icon(
-                                              Icons.download,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                    trailing: downloadList?.list?[index]
+                                                .list?[secondIndex].format ==
+                                            'movie'
+                                        ? const Icon(
+                                            Icons.play_circle,
+                                            color: Colors.blue,
+                                            size: 28,
+                                          )
+                                        : const SizedBox(),
                                     title: Text(downloadList?.list?[index]
                                             .list?[secondIndex].title ??
                                         ""),
