@@ -159,12 +159,12 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                         SizedBox(
                           width: Get.width,
                           height: Get.height / 20,
-                          child: Obx(() => MediaQuery(
-                                data: const MediaQueryData(
-                                  navigationMode: NavigationMode.directional,
-                                ),
-                                child: Slider(
+                          child: SliderTheme(
+                            data: SliderTheme.of(context)
+                                .copyWith(overlayColor: Colors.red),
+                            child: Obx(() => Slider(
                                   focusNode: controller.sliderFocusNode,
+                                  secondaryActiveColor: Colors.red,
                                   min: 0,
                                   max: 4600,
                                   value:
@@ -180,8 +180,8 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                                     await controller.player.play();
                                     controller.isSlider = false;
                                   },
-                                ),
-                              )),
+                                )),
+                          ),
                         )
                       ]),
                     )
