@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show FocusNode;
 import 'package:get/get.dart';
 import 'package:king_movie/core/services/login_service.dart' as service;
 import 'package:get_storage/get_storage.dart';
@@ -7,6 +8,9 @@ import 'package:king_movie/views/home/screens/main_screen.dart';
 class LoginViewModel extends GetxController with StateMixin {
   String email = '', password = '';
   final GetStorage getStorage = GetStorage();
+  final FocusNode emailFocusNode = FocusNode(),
+      passworFocusNode = FocusNode(),
+      loginFocusNode = FocusNode();
 
   @override
   void onInit() async {

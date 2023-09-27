@@ -19,7 +19,7 @@ class PlayMovieViewModel extends GetxController with StateMixin {
       subtitleFocusNode = FocusNode(),
       sliderFocusNode = FocusNode();
 
-  RxString position = ''.obs, duration = ''.obs;
+  Rx<Duration> position = Duration().obs, duration = Duration().obs;
   RxInt moviePostion = 0.obs;
 
   late final player = Player(
@@ -47,14 +47,12 @@ class PlayMovieViewModel extends GetxController with StateMixin {
     await GetStorage.init();
     await initVideo();
 
-    player.stream.playing.listen((event) {
-      if (position.value.isEmpty) {
-        position.value = player.state.duration.toString();
-      }
+    player.stream.duration.listen((event) {
+      duration.value = event;
     });
 
     player.stream.position.listen((event) async {
-      duration.value = event.toString();
+      position.value = event;
       if (!isSlider) {
         moviePostion.value = event.inSeconds;
       }

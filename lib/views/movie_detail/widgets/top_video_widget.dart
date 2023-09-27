@@ -4,14 +4,15 @@ import 'package:media_kit_video/media_kit_video_controls/media_kit_video_control
 import 'package:persian_number_utility/persian_number_utility.dart';
 
 class SubtitleWidget extends StatelessWidget {
-  const SubtitleWidget({super.key, required this.player});
+  const SubtitleWidget({super.key, required this.player, required this.focusNode});
   final Player player;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
     List<SubtitleTrack> subtitles = [];
-    return MaterialCustomButton(
-      onPressed: () async {
+    return InkWell(
+      onTap: () async {
         subtitles = player.state.tracks.subtitle;
         // .where((element) => element.title != null)
         // .toList();
@@ -42,7 +43,12 @@ class SubtitleWidget extends StatelessWidget {
           await player.setSubtitleTrack(trackSelected);
         }
       },
-      icon: const Icon(Icons.subtitles),
+      focusColor: Colors.red,
+      focusNode: focusNode,
+      child: MaterialCustomButton(
+        onPressed: () {},
+        icon: const Icon(Icons.subtitles),
+      ),
     );
   }
 }

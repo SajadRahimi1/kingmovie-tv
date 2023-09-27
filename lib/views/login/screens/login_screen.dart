@@ -20,15 +20,25 @@ class LoginScreen extends StatelessWidget {
         children: [
           Padding(
               padding: const EdgeInsets.all(10),
-              child: ProfileTextInput(
-                label: "ایمیل",
-                onChanged: (value) => controller.email = value,
+              child: InkWell(
+                onTap: () => controller.emailFocusNode.requestFocus(),
+                child: ProfileTextInput(
+                  label: "ایمیل",
+                  focusNode: controller.emailFocusNode,
+                  onSubmit: (_) => controller.passworFocusNode.requestFocus(),
+                  onChanged: (value) => controller.email = value,
+                ),
               )),
           Padding(
               padding: const EdgeInsets.all(10),
-              child: ProfileTextInput(
-                label: "رمز عبور",
-                onChanged: (value) => controller.password = value,
+              child: InkWell(
+                onTap: () => controller.passworFocusNode.requestFocus(),
+                child: ProfileTextInput(
+                  focusNode: controller.passworFocusNode,
+                  onSubmit: (_) => controller.loginFocusNode.requestFocus(),
+                  label: "رمز عبور",
+                  onChanged: (value) => controller.password = value,
+                ),
               )),
           SizedBox(
             height: MediaQuery.sizeOf(context).height / 20,
@@ -42,10 +52,13 @@ class LoginScreen extends StatelessWidget {
           ),
           const Spacer(),
           InkWell(
+            focusNode: controller.loginFocusNode,
             onTap: controller.login,
+            focusColor: Colors.cyan,
             child: Container(
-              width: MediaQuery.sizeOf(context).width,
+              width: MediaQuery.sizeOf(context).width / 2,
               height: MediaQuery.sizeOf(context).height / 13,
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15),

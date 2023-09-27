@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:king_movie/models/movie_model.dart';
 import 'package:king_movie/viewmodels/play_movie_viewmodel.dart';
-import 'package:king_movie/views/movie_detail/widgets/setting_bottom_sheet.dart';
 import 'package:king_movie/views/movie_detail/widgets/top_video_widget.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:king_movie/core/extensions/duration_extension.dart';
 
 class PlayMovieScreen extends StatefulWidget {
   const PlayMovieScreen({super.key, required this.downloadList});
@@ -107,20 +107,31 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                 aspectRatio: 16 / 9,
                 child: Stack(
                   children: [
+                    // video
                     Obx(() => Video(
                         controller: controller.controller,
                         subtitleViewConfiguration:
                             controller.subtitleViewConfiguration.value)),
+
+                    // widgets
                     SizedBox(
                       width: Get.width,
                       height: Get.height,
                       child: Column(children: [
+                        // top widgets
                         Row(
                           children: [
                             const Spacer(),
-                            SubtitleWidget(player: controller.player),
-                            AudioWidget(player: controller.player),
                             Material(
+                              color: Colors.transparent,
+                              child: SubtitleWidget(
+                                  focusNode: controller.subtitleFocusNode,
+                                  player: controller.player),
+                            ),
+                            Material(
+                                color: Colors.transparent,
+                                child: AudioWidget(player: controller.player)),
+                            /*Material(
                               color: Colors.transparent,
                               child: InkWell(
                                   focusColor: Colors.red,
@@ -143,19 +154,29 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                                     color: Colors.white,
                                   )),
                             ),
-                            IconButton(
-                                onPressed: () => Get.back(),
-                                icon: const Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
-                                )),
+                            */
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  focusColor: Colors.red,
+                                  onTap: () => Get.back(),
+                                  child: const Icon(
+                                    Icons.arrow_forward,
+                                    color: Colors.white,
+                                  )),
+                            ),
                           ],
                         ),
                         const Spacer(),
-                        Obx(() => Text(
-                              "${controller.position.value} / ${controller.duration.value}",
-                              style: const TextStyle(color: Colors.white),
-                            )),
+
+                        // bottom widgets
+                        Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Obx(() => Text(
+                                '${controller.position.value.label(reference: controller.duration.value)} / ${controller.duration.value.label(reference: controller.duration.value)}',
+                                style: const TextStyle(color: Colors.white),
+                              )),
+                        ),
                         SizedBox(
                           width: Get.width,
                           height: Get.height / 20,
