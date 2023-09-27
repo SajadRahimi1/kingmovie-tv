@@ -28,23 +28,54 @@ class ShowTicketScreen extends StatelessWidget {
                         physics: const BouncingScrollPhysics(),
                         itemCount: controller.model?.data?.list?.length ?? 0,
                         itemBuilder: (BuildContext context, int index) =>
-                            Messagewidget(
-                                isUserSend: (controller
-                                            .model?.data?.list?[index].sender ??
-                                        "") ==
-                                    "توسط شما",
-                                text: (controller
+                            controller.getBetweenQuotes((controller
                                             .model?.data?.list?[index].text ??
-                                        "")
-                                    .removeAllHtmlTags(),
-                                time:
-                                    controller.model?.data?.list?[index].date ??
-                                        "",
-                                messageIcon: Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: MediaQuery.sizeOf(context).width / 20,
-                                )))),
+                                        "")) ==
+                                    null
+                                ? InkWell(
+                                    onTap: () {},
+                                    child: Messagewidget(
+                                        isUserSend: (controller.model?.data
+                                                    ?.list?[index].sender ??
+                                                "") ==
+                                            "توسط شما",
+                                        text: (controller.model?.data
+                                                    ?.list?[index].text ??
+                                                "")
+                                            .removeAllHtmlTags(),
+                                        time: controller.model?.data
+                                                ?.list?[index].date ??
+                                            "",
+                                        messageIcon: Icon(
+                                          Icons.check,
+                                          color: Colors.white,
+                                          size:
+                                              MediaQuery.sizeOf(context).width /
+                                                  20,
+                                        )),
+                                  )
+                                : InkWell(
+                                    onTap: () {},
+                                    child: ImageMessageWidget(
+                                      /* onImageTap: () => Get.to(() => HeroImage(
+                                      tag: index.toString(),
+                                      src: controller.getBetweenQuotes((controller
+                                                  .model
+                                                  ?.data
+                                                  ?.list?[index]
+                                                  .text ??
+                                              "")) ??
+                                          '')),*/
+                                      tag: index.toString(),
+                                      text: controller.getBetweenQuotes(
+                                          (controller.model?.data?.list?[index]
+                                                  .text ??
+                                              "")),
+                                      time: controller
+                                              .model?.data?.list?[index].date ??
+                                          "",
+                                    ),
+                                  ))),
                 // const Divider(
                 //   color: Colors.w,
                 // ),

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show FocusNode;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:king_movie/core/constants/singleton_class.dart';
@@ -12,11 +13,14 @@ class HomeViewModel extends GetxController with StateMixin {
   HomeModel? homeModel;
   String searchValue = '';
 
+  final FocusNode searchFocusNode=FocusNode();
+
   final GetStorage getStorage = GetStorage();
   final AutoScrollController newSeriesController = AutoScrollController(),
       newMoviesController = AutoScrollController(),
       newDubMoviesController = AutoScrollController(),
-      newDubSeriesController = AutoScrollController(),mainScrollController = AutoScrollController();
+      newDubSeriesController = AutoScrollController(),
+      mainScrollController = AutoScrollController();
   String token = '';
 
   int mainScrollIndex = 0;

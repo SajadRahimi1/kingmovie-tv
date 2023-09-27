@@ -70,6 +70,7 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                   // Left
                   if (controller.sliderFocusNode.hasFocus) {
                     controller.isSlider = true;
+                    print(controller.movieDuration);
                     controller.moviePostion.value += 10;
                   }
                 } else if (data.keyCode == 22) {
@@ -78,7 +79,9 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                   // Right
                   if (controller.sliderFocusNode.hasFocus) {
                     controller.isSlider = true;
-                    controller.moviePostion.value -= 10;
+                    if (controller.moviePostion > 10) {
+                      controller.moviePostion.value -= 10;
+                    }
                   }
                 } else if (data.keyCode == 23) {
                   controller.showButtonsTimer.cancel();
@@ -135,9 +138,11 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                   children: [
                     // video
                     Obx(() => Video(
-                        controller: controller.controller,
-                        subtitleViewConfiguration:
-                            controller.subtitleViewConfiguration.value)),
+                          controller: controller.controller,
+                          subtitleViewConfiguration:
+                              controller.subtitleViewConfiguration.value,
+                          controls: NoVideoControls,
+                        )),
 
                     // widgets
                     Obx(() => Visibility(

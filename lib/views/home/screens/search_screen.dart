@@ -39,7 +39,7 @@ class SearchScreen extends StatelessWidget {
                               "")),
                   child: Container(
                     width: MediaQuery.sizeOf(context).width,
-                    height: MediaQuery.sizeOf(context).height / 4,
+                    height: MediaQuery.sizeOf(context).height / 3.4,
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
@@ -109,7 +109,7 @@ class SearchScreen extends StatelessWidget {
                         )),
                         // image
                         SizedBox(
-                          width: MediaQuery.sizeOf(context).width / 3,
+                          width: MediaQuery.sizeOf(context).width / 6,
                           height: MediaQuery.sizeOf(context).height,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),

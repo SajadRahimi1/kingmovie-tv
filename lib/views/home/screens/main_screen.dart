@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:king_movie/core/constants/color_constants.dart';
 import 'package:king_movie/core/widgets/app_bar.dart';
 import 'package:king_movie/core/widgets/menu.dart';
-import 'package:king_movie/models/search_model.dart';
 import 'package:king_movie/viewmodels/home_viewmodel.dart';
 import 'package:king_movie/views/home/screens/search_screen.dart';
 import 'package:king_movie/views/home/widgets/advance_search_dialog.dart';
@@ -34,113 +32,64 @@ class MainScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(
                 vertical: Get.height / 20, horizontal: Get.width / 20),
-            child: SizedBox(
-              width: Get.width,
-              height: Get.height / 18,
-              child: TypeAheadField<DataList>(
-                suggestionsCallback: (pattern) async {
-                  var data = await controller.search(pattern);
-                  return data?.data?.dataList ?? [];
-                },
-                suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                    borderRadius: BorderRadius.circular(10)),
-                onSuggestionSelected: (suggestion) => Get.to(
-                    () => MovieDetailScreen(movieId: suggestion.id ?? "")),
-                // hideKeyboardOnDrag: true,
-                // hideSuggestionsOnKeyboardHide: false,
-                itemBuilder: (context, itemData) => Container(
-                  padding: const EdgeInsets.all(8),
-                  width: Get.width,
-                  height: Get.height / 7,
-                  child: Row(textDirection: TextDirection.ltr, children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: itemData.poster == null
-                          ? null
-                          : Image.network(
-                              itemData.poster ?? "",
-                              fit: BoxFit.fill,
-                            ),
-                    ),
-                    const SizedBox(
-                      width: 12,
-                    ),
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          itemData.title ?? "",
-                          textDirection: TextDirection.ltr,
-                          style: TextStyle(
-                              color: Colors.black, fontSize: Get.width / 32),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+            child: InkWell(
+              onTap: () => controller.searchFocusNode.requestFocus(),
+              child: SizedBox(
+                width: Get.width,
+                height: Get.height / 15,
+                child: Padding(
+                  padding: const EdgeInsets.all(3),
+                  child: TextFormField(
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    maxLines: 1,
+                    textAlignVertical: TextAlignVertical.bottom,
+                    onChanged: (value) => controller.searchValue = value,
+                    focusNode: controller.searchFocusNode,
+                    onFieldSubmitted: (_) => Get.to(() => SearchScreen(
+                          title: controller.searchValue,
+                        )),
+                    decoration: InputDecoration(
+                        filled: true,
+                        suffixIcon: Row(
+                          // mainAxisAlignment:
+                          // MainAxisAlignment.spaceBetween, // added line
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              itemData.vote ?? "",
-                              textDirection: TextDirection.ltr,
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 12),
+                            InkWell(
+                              onTap: () => Get.dialog(AdvanceSearchDialog(
+                                model: controller.homeModel,
+                              )),
+                              child: const Icon(
+                                Icons.settings,
+                                color: Colors.white,
+                              ),
                             ),
-                            const Icon(Icons.star, color: yellowColor),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            InkWell(
+                              onTap: () => Get.to(() => SearchScreen(
+                                    title: controller.searchValue,
+                                  )),
+                              child: const Icon(
+                                Icons.search,
+                                color: yellowColor,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            )
                           ],
                         ),
-                      ],
-                    )),
-                  ]),
-                ),
-                hideOnError: true,
-                hideOnEmpty: true,
-                minCharsForSuggestions: 3,
-                textFieldConfiguration: TextFieldConfiguration(
-                  style: const TextStyle(color: Colors.white, fontSize: 12),
-                  maxLines: 1,
-                  textAlignVertical: TextAlignVertical.bottom,
-                  onChanged: (value) => controller.searchValue = value,
-                  decoration: InputDecoration(
-                      focusColor: darkBlue,
-                      filled: true,
-                      suffixIcon: Row(
-                        // mainAxisAlignment:
-                        // MainAxisAlignment.spaceBetween, // added line
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          InkWell(
-                            onTap: () => Get.dialog(AdvanceSearchDialog(
-                              model: controller.homeModel,
-                            )),
-                            child: const Icon(
-                              Icons.settings,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          InkWell(
-                            onTap: () => Get.to(() => SearchScreen(
-                                  title: controller.searchValue,
-                                )),
-                            child: const Icon(
-                              Icons.search,
-                              color: yellowColor,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          )
-                        ],
-                      ),
-                      hintStyle: const TextStyle(
-                          color: Color(0xffafafaf), fontSize: 12),
-                      fillColor: textFormColor,
-                      hintText: "فیلم و سریال را جست وجوی کنید",
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20))),
+                        hintStyle: const TextStyle(
+                            color: Color(0xffafafaf), fontSize: 12),
+                        fillColor: textFormColor,
+                        hintText: "فیلم و سریال را جست وجوی کنید",
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                  ),
                 ),
               ),
             ),
