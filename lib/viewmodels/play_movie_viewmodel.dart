@@ -21,7 +21,7 @@ class PlayMovieViewModel extends GetxController with StateMixin {
       subtitleFocusNode = FocusNode(),
       sliderFocusNode = FocusNode();
 
-  Rx<Duration> position = Duration().obs, duration = Duration().obs;
+  Rx<Duration> position = const Duration().obs, duration = const Duration().obs;
   RxInt moviePostion = 0.obs;
 
   late final player = Player(
@@ -31,7 +31,7 @@ class PlayMovieViewModel extends GetxController with StateMixin {
   late final controller = VideoController(player,
       configuration: const VideoControllerConfiguration(
           // enableHardwareAcceleration: false,
-          ));
+          androidAttachSurfaceAfterVideoParameters: true));
 
   Rx<SubtitleViewConfiguration> subtitleViewConfiguration =
       const SubtitleViewConfiguration().obs;
@@ -50,7 +50,7 @@ class PlayMovieViewModel extends GetxController with StateMixin {
     await initVideo();
 
     showButtonsTimer =
-        Timer(Duration(seconds: 3), () => showButtons.value = false);
+        Timer(const Duration(seconds: 3), () => showButtons.value = false);
 
     player.stream.duration.listen((event) {
       duration.value = event;

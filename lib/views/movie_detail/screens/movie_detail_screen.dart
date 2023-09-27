@@ -484,7 +484,7 @@ class MovieDetailScreen extends StatelessWidget {
                                                                                 ),
                                                                                 onTap: () => Get.dialog(SeriesDialog(
                                                                                     downloadList: controller.movieModel?.data?.link?.data?[index].list?[secondIndex],
-                                                                                    initVideo: (initVideo) {},
+                                                                                    initVideo: (initVideo) =>initVideo==null?{}: Get.to(() => PlayMovieScreen(downloadList: initVideo)),
                                                                                     // controller
                                                                                     //     .choosePlayer(
                                                                                     //         initVideo),

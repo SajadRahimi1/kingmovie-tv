@@ -70,7 +70,6 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                   // Left
                   if (controller.sliderFocusNode.hasFocus) {
                     controller.isSlider = true;
-                    print(controller.movieDuration);
                     controller.moviePostion.value += 10;
                   }
                 } else if (data.keyCode == 22) {
@@ -93,7 +92,11 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                   event.data is RawKeyEventDataAndroid) {
                 RawKeyEventDataAndroid data =
                     event.data as RawKeyEventDataAndroid;
-                if (data.keyCode == 21) {
+                if (data.keyCode == 20) {
+                  controller.showButtonsTimer = Timer(
+                      const Duration(seconds: 3),
+                      () => controller.showButtons.value = false);
+                } else if (data.keyCode == 21) {
                   controller.showButtonsTimer = Timer(
                       const Duration(seconds: 3),
                       () => controller.showButtons.value = false);
