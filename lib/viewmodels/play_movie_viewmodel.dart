@@ -12,8 +12,10 @@ class PlayMovieViewModel extends GetxController with StateMixin {
   RxBool isInitialVideo = false.obs;
   RxInt commentUpdate = 1.obs;
   Timer? timer;
+  late Timer showButtonsTimer;
   final DownloadList? downloadList;
   int? movieDuration;
+  RxBool showButtons = true.obs;
   bool isSlider = false;
   final FocusNode movieFocusNode = FocusNode(),
       subtitleFocusNode = FocusNode(),
@@ -46,6 +48,9 @@ class PlayMovieViewModel extends GetxController with StateMixin {
     super.onInit();
     await GetStorage.init();
     await initVideo();
+
+    showButtonsTimer =
+        Timer(Duration(seconds: 3), () => showButtons.value = false);
 
     player.stream.duration.listen((event) {
       duration.value = event;
