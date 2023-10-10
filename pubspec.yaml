@@ -23,15 +23,22 @@ dependencies:
   flutter_easyloading: ^3.0.5
   android_intent_plus: ^4.0.2
   device_apps: ^2.2.0
-  flutter_typeahead: ^4.7.0
-  dpad_container: ^2.0.4
   scroll_to_index: ^3.0.1
+  flutter_native_splash: ^2.3.3
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+
+
+flutter_native_splash:
+  color: "#081523"
+  image: assets/pictures/icons/logo.png
+  android: true
+  ios: true
+
 
 flutter:
 

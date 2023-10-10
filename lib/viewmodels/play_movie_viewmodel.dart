@@ -31,7 +31,7 @@ class PlayMovieViewModel extends GetxController with StateMixin {
   late final controller = VideoController(player,
       configuration: const VideoControllerConfiguration(
           // enableHardwareAcceleration: false,
-          androidAttachSurfaceAfterVideoParameters: true));
+          ));
 
   Rx<SubtitleViewConfiguration> subtitleViewConfiguration =
       const SubtitleViewConfiguration().obs;
