@@ -28,7 +28,7 @@ class MovieViewModel extends GetxController with StateMixin {
   Rx<String> replyId = "".obs;
   Timer? timer;
   int? movieDuration;
-  final FocusNode focusNode = FocusNode(),downloadFocus=FocusNode(),castFocus=FocusNode(),commentFocus=FocusNode();
+  final FocusNode focusNode = FocusNode(),downloadFocus=FocusNode(),castFocus=FocusNode(),commentFocus=FocusNode(),trailerFocus=FocusNode();
 
   late final player = Player();
   // Create a [VideoController] to handle video output from [Player].
@@ -143,19 +143,6 @@ class MovieViewModel extends GetxController with StateMixin {
             ? MessageType.success
             : MessageType.error);
   }
-
-  List<AudioTrack> audios() {
-    return player.state.tracks.audio
-        .where((element) => element.title != null)
-        .toList();
-  }
-
-  List<SubtitleTrack> subtitles() {
-    return player.state.tracks.subtitle;
-    // .where((element) => element.title != null)
-    // .toList();
-  }
-
   Future<void> openUrl(DownloadList? url) async {
     if (url?.link != null) {
       bool isInstalled = await DeviceApps.isAppInstalled('com.dv.adm');

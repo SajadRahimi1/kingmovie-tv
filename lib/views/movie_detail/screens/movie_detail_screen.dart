@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:king_movie/core/constants/color_constants.dart';
@@ -22,9 +23,6 @@ class MovieDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(MovieViewModel(movieId));
 
-    // RxInt starSelected = (-1).obs;
-    RxInt openEexpansionIndex = (-1).obs;
-
     return WillPopScope(
       onWillPop: () async {
         controller.dispose();
@@ -34,6 +32,7 @@ class MovieDetailScreen extends StatelessWidget {
           length: 5,
           child: Scaffold(
               backgroundColor: blackColor,
+              resizeToAvoidBottomInset: false,
               body: controller.obx(
                 (status) => Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,7 +234,11 @@ class MovieDetailScreen extends StatelessWidget {
                                             controller.pageScrollController
                                                 .scrollToIndex(10,
                                                     duration: const Duration(
-                                                        seconds: 3));
+                                                        seconds: 3))
+                                                .then((value) => controller
+                                                    .trailerFocus
+                                                    .requestFocus());
+                                            {}
                                             break;
                                         }
                                       },
@@ -484,7 +487,7 @@ class MovieDetailScreen extends StatelessWidget {
                                                                                 ),
                                                                                 onTap: () => Get.dialog(SeriesDialog(
                                                                                     downloadList: controller.movieModel?.data?.link?.data?[index].list?[secondIndex],
-                                                                                    initVideo: (initVideo) =>initVideo==null?{}: Get.to(() => PlayMovieScreen(downloadList: initVideo)),
+                                                                                    initVideo: (initVideo) => initVideo == null ? {} : Get.to(() => PlayMovieScreen(downloadList: initVideo)),
                                                                                     // controller
                                                                                     //     .choosePlayer(
                                                                                     //         initVideo),
@@ -582,105 +585,213 @@ class MovieDetailScreen extends StatelessWidget {
                               controller: controller.pageScrollController,
                               index: 6,
                               child: SizedBox(
+                                  width: Get.width,
+                                  height: Get.height / 5.5,
                                   child: Column(
-                                      children: List.generate(
-                                          controller.movieModel?.data?.cast
-                                                  ?.length ??
-                                              0,
-                                          (index) => InkWell(
-                                                focusNode: index == 0
-                                                    ? controller.castFocus
-                                                    : null,
-                                                onTap: () =>
-                                                    Get.to(() => SearchScreen(
-                                                          title: "",
-                                                          cast: controller
-                                                              .movieModel
-                                                              ?.data
-                                                              ?.cast?[index]
-                                                              .name,
-                                                        )),
-                                                child: Container(
-                                                  margin: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 5),
-                                                  width: Get.width,
-                                                  height: Get.height / 11,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              8),
-                                                      color: blackColor,
-                                                      border: Border.all(
-                                                          color: const Color(
-                                                              0xff3f3f3f))),
-                                                  child: Row(
-                                                      textDirection:
-                                                          TextDirection.ltr,
-                                                      children: [
-                                                        ClipRRect(
+                                    children: [
+                                      const Text(
+                                        "بازیگران",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Expanded(
+                                        child: Directionality(
+                                          textDirection: TextDirection.ltr,
+                                          child: ListView.builder(
+                                              shrinkWrap: false,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: controller.movieModel
+                                                      ?.data?.cast?.length ??
+                                                  0,
+                                              itemBuilder: (_, index) =>
+                                                  InkWell(
+                                                    focusNode: index == 0
+                                                        ? controller.castFocus
+                                                        : null,
+                                                    onTap: () => Get.off(
+                                                        () => SearchScreen(
+                                                              title: "",
+                                                              cast: controller
+                                                                  .movieModel
+                                                                  ?.data
+                                                                  ?.cast?[index]
+                                                                  .name,
+                                                              // movieId: widget.movieId,
+                                                            )),
+                                                    child: Container(
+                                                      margin: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
+                                                      width: Get.width / 5,
+                                                      height: Get.height,
+                                                      decoration: BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(8),
-                                                          child: Image.network(
-                                                            controller
-                                                                    .movieModel
-                                                                    ?.data
-                                                                    ?.cast?[
-                                                                        index]
-                                                                    .image ??
-                                                                "",
-                                                            fit: BoxFit.fill,
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
+                                                          color: darkBlue,
+                                                          border: Border.all(
+                                                              color: const Color(
+                                                                  0xff3f3f3f))),
+                                                      child: Row(
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          children: [
+                                                            ClipRRect(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                              child:
+                                                                  Image.network(
+                                                                controller
+                                                                        .movieModel
+                                                                        ?.data
+                                                                        ?.cast?[
+                                                                            index]
+                                                                        .image ??
+                                                                    "",
+                                                                fit:
+                                                                    BoxFit.fill,
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding: const EdgeInsets
                                                                       .symmetric(
                                                                   horizontal:
                                                                       8),
-                                                          child: Text(
+                                                              child: Text(
+                                                                controller
+                                                                        .movieModel
+                                                                        ?.data
+                                                                        ?.cast?[
+                                                                            index]
+                                                                        .name ??
+                                                                    "",
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .ltr,
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        15),
+                                                              ),
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                controller
+                                                                        .movieModel
+                                                                        ?.data
+                                                                        ?.cast?[
+                                                                            index]
+                                                                        .simple ??
+                                                                    "",
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                textDirection:
+                                                                    TextDirection
+                                                                        .ltr,
+                                                                style: const TextStyle(
+                                                                    color: Color(
+                                                                        0xff5f5f5f),
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                    ),
+                                                  )),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                            Divider(
+                              color: Colors.grey,
+                              height: Get.height / 18,
+                            ),
+
+                            // trailer
+                            AutoScrollTag(
+                              key: const ValueKey(8),
+                              controller: controller.pageScrollController,
+                              index: 10,
+                              child: SizedBox(
+                                width: Get.width,
+                                height: Get.height / 3,
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      "تریلر و اسکرین شات",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    SizedBox(
+                                      width: Get.width,
+                                      height: Get.height / 4,
+                                      child: CarouselSlider(
+                                          options: CarouselOptions(
+                                              initialPage: (controller
+                                                          .movieModel
+                                                          ?.data
+                                                          ?.trailer
+                                                          ?.length ??
+                                                      1) -
+                                                  1,
+                                              aspectRatio: 1,                                              
+                                              viewportFraction: 0.6),
+                                          items: List.generate(
+                                              controller.movieModel?.data
+                                                      ?.trailer?.length ??
+                                                  0,
+                                              (index) => InkWell(
+                                                    focusNode: index == 0
+                                                        ? controller
+                                                            .trailerFocus
+                                                        : null,
+                                                    onTap: () {
+                                                      if (controller
+                                                              .movieModel
+                                                              ?.data
+                                                              ?.trailer?[index]
+                                                              .type ==
+                                                          'trailer') {
+                                                        controller.initTrailer(
                                                             controller
-                                                                    .movieModel
-                                                                    ?.data
-                                                                    ?.cast?[
-                                                                        index]
-                                                                    .name ??
-                                                                "",
-                                                            textDirection:
-                                                                TextDirection
-                                                                    .ltr,
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 15),
-                                                          ),
-                                                        ),
-                                                        Expanded(
-                                                          child: Text(
-                                                            controller
-                                                                    .movieModel
-                                                                    ?.data
-                                                                    ?.cast?[
-                                                                        index]
-                                                                    .simple ??
-                                                                "",
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            textDirection:
-                                                                TextDirection
-                                                                    .ltr,
-                                                            style: const TextStyle(
-                                                                color: Color(
-                                                                    0xff5f5f5f),
-                                                                fontSize: 14),
-                                                          ),
-                                                        ),
-                                                      ]),
-                                                ),
-                                              )))),
+                                                                .movieModel
+                                                                ?.data
+                                                                ?.trailer?[
+                                                                    index]
+                                                                .view);
+                                                      } else {
+                                                        // Get.to(() => ScreenShotScreen(
+                                                        //     src: controller
+                                                        //         .movieModel
+                                                        //         ?.data
+                                                        //         ?.trailer?[index]
+                                                        //         .image));
+                                                      }
+                                                    },
+                                                    child: TrailerWidget(
+                                                        trailerModel: controller
+                                                            .movieModel
+                                                            ?.data
+                                                            ?.trailer?[index]),
+                                                  ))),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             Divider(
                               color: Colors.grey,
@@ -838,37 +949,6 @@ class MovieDetailScreen extends StatelessWidget {
                               height: Get.height / 18,
                             ),
 
-                            // trailer
-                            AutoScrollTag(
-                              key: const ValueKey(10),
-                              controller: controller.pageScrollController,
-                              index: 10,
-                              child: SizedBox(
-                                  child: Column(
-                                children: List.generate(
-                                  controller
-                                          .movieModel?.data?.trailer?.length ??
-                                      0,
-                                  (index) => InkWell(
-                                    onTap: () async {
-                                      if (controller.movieModel?.data
-                                              ?.trailer?[index].type ==
-                                          'trailer') {
-                                        await controller.initTrailer(controller
-                                                .movieModel
-                                                ?.data
-                                                ?.trailer?[index]
-                                                .view ??
-                                            "");
-                                      }
-                                    },
-                                    child: TrailerWidget(
-                                        trailerModel: controller
-                                            .movieModel?.data?.trailer?[index]),
-                                  ),
-                                ),
-                              )),
-                            )
                           ]),
                     ),
                   ],
