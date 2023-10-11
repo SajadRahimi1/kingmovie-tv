@@ -21,10 +21,10 @@ class LoginScreen extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.all(10),
               child: InkWell(
-                onTap: () => controller.emailFocusNode.requestFocus(),
+                // onTap: () => controller.emailFocusNode.requestFocus(),
                 child: ProfileTextInput(
                   label: "ایمیل",
-                  focusNode: controller.emailFocusNode,
+                  // focusNode: controller.emailFocusNode,
                   onSubmit: (_) => controller.passworFocusNode.requestFocus(),
                   onChanged: (value) => controller.email = value,
                 ),
@@ -32,9 +32,9 @@ class LoginScreen extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.all(10),
               child: InkWell(
-                onTap: () => controller.passworFocusNode.requestFocus(),
+                // onTap: () => controller.passworFocusNode.requestFocus(),
                 child: ProfileTextInput(
-                  focusNode: controller.passworFocusNode,
+                  // focusNode: controller.passworFocusNode,
                   onSubmit: (_) => controller.loginFocusNode.requestFocus(),
                   label: "رمز عبور",
                   onChanged: (value) => controller.password = value,

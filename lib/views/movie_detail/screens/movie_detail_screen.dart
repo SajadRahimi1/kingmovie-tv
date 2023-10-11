@@ -110,6 +110,7 @@ class MovieDetailScreen extends StatelessWidget {
                                             style: const TextStyle(
                                               color: Color(0xffffffff),
                                             )),
+                                            
                                       ],
                                     ),
 
@@ -184,6 +185,25 @@ class MovieDetailScreen extends StatelessWidget {
                                     // tabs
                                     // Expanded(
                                     //     child: )
+                                    const Spacer(),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Material(
+                                          color: darkBlue,
+                                          child: InkWell(
+                                            onTap: controller.addFavorite,
+                                            child: Obx(() => Icon(
+                                                                                          controller.isBookmarked.value
+                                                                                              ? Icons.bookmark
+                                                                                              : Icons.bookmark_add_outlined,
+                                                                                          color: Colors.white,
+                                                                                          size: 30,
+                                                                                        )),
+                                          ),
+                                        )
+                                      ],
+                                    )
                                   ]),
                             ),
 
@@ -748,7 +768,7 @@ class MovieDetailScreen extends StatelessWidget {
                                                           ?.length ??
                                                       1) -
                                                   1,
-                                              aspectRatio: 1,                                              
+                                              aspectRatio: 1,
                                               viewportFraction: 0.6),
                                           items: List.generate(
                                               controller.movieModel?.data
@@ -948,7 +968,6 @@ class MovieDetailScreen extends StatelessWidget {
                               color: Colors.grey,
                               height: Get.height / 18,
                             ),
-
                           ]),
                     ),
                   ],

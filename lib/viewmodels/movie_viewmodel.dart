@@ -22,13 +22,17 @@ class MovieViewModel extends GetxController with StateMixin {
   MovieViewModel(this.movieId);
   final String movieId;
   MovieModel? movieModel;
-  RxBool isInitialVideo = false.obs;
+  RxBool isInitialVideo = false.obs, isBookmarked = false.obs;
   RxInt commentUpdate = 1.obs;
   final TextEditingController commentController = TextEditingController();
   Rx<String> replyId = "".obs;
   Timer? timer;
   int? movieDuration;
-  final FocusNode focusNode = FocusNode(),downloadFocus=FocusNode(),castFocus=FocusNode(),commentFocus=FocusNode(),trailerFocus=FocusNode();
+  final FocusNode focusNode = FocusNode(),
+      downloadFocus = FocusNode(),
+      castFocus = FocusNode(),
+      commentFocus = FocusNode(),
+      trailerFocus = FocusNode();
 
   late final player = Player();
   // Create a [VideoController] to handle video output from [Player].
@@ -92,6 +96,7 @@ class MovieViewModel extends GetxController with StateMixin {
     final request = await movie_service.getMovie(token, movieId);
     if (request.statusCode == 200 && request.body['error'] == 'false') {
       movieModel = MovieModel.fromJson(request.body);
+      isBookmarked.value = movieModel?.data?.watch == 'true';
       change(null, status: RxStatus.success());
     } else {
       showMessage(message: request.body['message'], type: MessageType.error);
@@ -142,7 +147,12 @@ class MovieViewModel extends GetxController with StateMixin {
         type: request.body['error'] == 'false'
             ? MessageType.success
             : MessageType.error);
+    if (request.body['error'] == 'false') {
+      // reverse bookmark value
+      isBookmarked.value = !isBookmarked.value;
+    }
   }
+
   Future<void> openUrl(DownloadList? url) async {
     if (url?.link != null) {
       bool isInstalled = await DeviceApps.isAppInstalled('com.dv.adm');
