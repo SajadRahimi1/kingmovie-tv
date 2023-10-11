@@ -25,6 +25,10 @@ class MovieViewModel extends GetxController with StateMixin {
   RxBool isInitialVideo = false.obs, isBookmarked = false.obs;
   RxInt commentUpdate = 1.obs;
   final TextEditingController commentController = TextEditingController();
+
+  SubtitleViewConfiguration subtitleViewConfiguration =
+      SubtitleViewConfiguration();
+
   Rx<String> replyId = "".obs;
   Timer? timer;
   int? movieDuration;
@@ -42,8 +46,6 @@ class MovieViewModel extends GetxController with StateMixin {
       ));
 
   final AutoScrollController pageScrollController = AutoScrollController();
-  Rx<SubtitleViewConfiguration> subtitleViewConfiguration =
-      const SubtitleViewConfiguration().obs;
 
   final GetStorage getStorage = GetStorage();
   String token = '';
@@ -87,10 +89,6 @@ class MovieViewModel extends GetxController with StateMixin {
     if (timer != null) timer?.cancel();
     player.dispose();
   }
-
-  void setSubStyle(SubtitleViewConfiguration config) =>
-      subtitleViewConfiguration.value =
-          const SubtitleViewConfiguration(style: TextStyle(color: Colors.red));
 
   Future<void> getData() async {
     final request = await movie_service.getMovie(token, movieId);

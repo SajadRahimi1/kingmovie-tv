@@ -10,8 +10,12 @@ import 'package:media_kit_video/media_kit_video.dart';
 import 'package:king_movie/core/extensions/duration_extension.dart';
 
 class PlayMovieScreen extends StatefulWidget {
-  const PlayMovieScreen({super.key, required this.downloadList});
+  const PlayMovieScreen(
+      {super.key,
+      required this.downloadList,
+      required this.subtitleViewConfiguration});
   final DownloadList? downloadList;
+  final SubtitleViewConfiguration subtitleViewConfiguration;
 
   @override
   State<PlayMovieScreen> createState() => _PlayMovieScreenState();
@@ -140,12 +144,12 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                 child: Stack(
                   children: [
                     // video
-                    Obx(() => Video(
-                          controller: controller.controller,
-                          subtitleViewConfiguration:
-                              controller.subtitleViewConfiguration.value,
-                          controls: NoVideoControls,
-                        )),
+                    Video(
+                      controller: controller.controller,
+                      subtitleViewConfiguration:
+                          widget.subtitleViewConfiguration,
+                      controls: NoVideoControls,
+                    ),
 
                     // widgets
                     Obx(() => Visibility(

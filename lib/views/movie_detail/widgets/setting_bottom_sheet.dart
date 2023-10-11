@@ -47,10 +47,10 @@ class SettingBottomSheet extends StatelessWidget {
             child: Row(children: [
               InkWell(
                   onTap: () => fontSize.value++,
-                  child: CircleAvatar(
-                    radius: Get.width / 26,
+                  child: const CircleAvatar(
+                    // radius: 26,
                     backgroundColor: Colors.green,
-                    child: const Center(
+                    child: Center(
                         child: Icon(
                       Icons.add,
                       color: Colors.white,
@@ -63,10 +63,10 @@ class SettingBottomSheet extends StatelessWidget {
                   )),
               InkWell(
                   onTap: () => fontSize.value--,
-                  child: CircleAvatar(
-                    radius: Get.width / 26,
+                  child: const CircleAvatar(
+                    // radius: 26,
                     backgroundColor: Colors.red,
-                    child: const Center(
+                    child: Center(
                         child: Icon(
                       Icons.remove,
                       color: Colors.white,
@@ -76,15 +76,15 @@ class SettingBottomSheet extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: ()=>Get.back(
-            result: TextStyle(fontSize: fontSize.value.toDouble(),color: [
-                                Colors.blue,
-                                Colors.black,
-                                Colors.yellow,
-                                Colors.red
-                              ][colorSelected.value]),
-
-            
+          onTap: () => Get.back(
+            result: TextStyle(
+                fontSize: fontSize.value.toDouble(),
+                color: [
+                  Colors.blue,
+                  Colors.black,
+                  Colors.yellow,
+                  Colors.red
+                ][colorSelected.value]),
           ),
           child: Container(
             width: Get.width,

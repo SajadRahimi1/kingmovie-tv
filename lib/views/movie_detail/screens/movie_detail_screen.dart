@@ -13,6 +13,8 @@ import 'package:king_movie/views/menu/screens/vip_screen.dart';
 import 'package:king_movie/views/movie_detail/screens/play_movie_screen.dart';
 import 'package:king_movie/views/movie_detail/widgets/comment_widget.dart';
 import 'package:king_movie/views/movie_detail/widgets/series_tiles_widget.dart';
+import 'package:king_movie/views/movie_detail/widgets/setting_bottom_sheet.dart';
+import 'package:media_kit_video/media_kit_video.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class MovieDetailScreen extends StatelessWidget {
@@ -110,7 +112,6 @@ class MovieDetailScreen extends StatelessWidget {
                                             style: const TextStyle(
                                               color: Color(0xffffffff),
                                             )),
-                                            
                                       ],
                                     ),
 
@@ -194,12 +195,39 @@ class MovieDetailScreen extends StatelessWidget {
                                           child: InkWell(
                                             onTap: controller.addFavorite,
                                             child: Obx(() => Icon(
-                                                                                          controller.isBookmarked.value
-                                                                                              ? Icons.bookmark
-                                                                                              : Icons.bookmark_add_outlined,
-                                                                                          color: Colors.white,
-                                                                                          size: 30,
-                                                                                        )),
+                                                  controller.isBookmarked.value
+                                                      ? Icons.bookmark
+                                                      : Icons
+                                                          .bookmark_add_outlined,
+                                                  color: Colors.white,
+                                                  size: 30,
+                                                )),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 25,
+                                        ),
+                                        Material(
+                                          color: darkBlue,
+                                          child: InkWell(
+                                            onTap: () async {
+                                              TextStyle? subtitleStyle =
+                                                  await showModalBottomSheet(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          const SettingBottomSheet());
+                                              if (subtitleStyle != null) {
+                                                controller
+                                                        .subtitleViewConfiguration =
+                                                    SubtitleViewConfiguration(
+                                                        style: subtitleStyle);
+                                              }
+                                            },
+                                            child: const Icon(
+                                              Icons.settings,
+                                              color: Colors.white,
+                                              size: 30,
+                                            ),
                                           ),
                                         )
                                       ],
@@ -507,7 +535,12 @@ class MovieDetailScreen extends StatelessWidget {
                                                                                 ),
                                                                                 onTap: () => Get.dialog(SeriesDialog(
                                                                                     downloadList: controller.movieModel?.data?.link?.data?[index].list?[secondIndex],
-                                                                                    initVideo: (initVideo) => initVideo == null ? {} : Get.to(() => PlayMovieScreen(downloadList: initVideo)),
+                                                                                    initVideo: (initVideo) => initVideo == null
+                                                                                        ? {}
+                                                                                        : Get.to(() => PlayMovieScreen(
+                                                                                              downloadList: initVideo,
+                                                                                              subtitleViewConfiguration: controller.subtitleViewConfiguration,
+                                                                                            )),
                                                                                     // controller
                                                                                     //     .choosePlayer(
                                                                                     //         initVideo),
@@ -530,6 +563,8 @@ class MovieDetailScreen extends StatelessWidget {
                                                                     (listIndex) =>
                                                                         ListTile(
                                                                       onTap: () => Get.to(() => PlayMovieScreen(
+                                                                          subtitleViewConfiguration: controller
+                                                                              .subtitleViewConfiguration,
                                                                           downloadList: controller
                                                                               .movieModel
                                                                               ?.data
