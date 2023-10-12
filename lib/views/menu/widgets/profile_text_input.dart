@@ -7,12 +7,15 @@ class ProfileTextInput extends StatelessWidget {
       required this.label,
       this.textEditingController,
       this.isEnable = true,
-      this.onChanged, this.focusNode, this.onSubmit});
+      this.onChanged,
+      this.focusNode,
+      this.onSubmit,
+      this.obscureText = false});
   final String label;
   final TextEditingController? textEditingController;
-  final void Function(String)? onChanged,onSubmit;
+  final void Function(String)? onChanged, onSubmit;
   final FocusNode? focusNode;
-  final bool isEnable;
+  final bool isEnable, obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class ProfileTextInput extends StatelessWidget {
         height: MediaQuery.sizeOf(context).height / 15,
         child: TextFormField(
           enabled: isEnable,
+          obscureText: obscureText,
           onChanged: onChanged,
           controller: textEditingController,
           onFieldSubmitted: onSubmit,

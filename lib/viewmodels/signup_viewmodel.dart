@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart' show FocusNode;
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:king_movie/core/services/login_service.dart';
@@ -8,6 +9,12 @@ import 'package:king_movie/views/home/screens/main_screen.dart';
 class SignupViewModel extends GetxController {
   final GetStorage getStorage = GetStorage();
   SignupModel model = SignupModel();
+  final FocusNode emailFocusNode = FocusNode(),
+      nameFocusNode = FocusNode(),
+      phoneFocusNode = FocusNode(),
+      passwordFocusNode = FocusNode(),
+      repasswordFocusNode = FocusNode(),
+      buttonFocusNode = FocusNode();
 
   @override
   void onInit() async {

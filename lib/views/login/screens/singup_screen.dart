@@ -19,32 +19,49 @@ class SingupScreen extends StatelessWidget {
       backgroundColor: darkBlue,
       body: Column(
         children: [
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: ProfileTextInput(
-                label: "ایمیل",
-                onChanged: (value) => controller.model.email = value,
-              )),
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: ProfileTextInput(
-                  label: "موبایل",
-                  onChanged: (value) => controller.model.mobile = value)),
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: ProfileTextInput(
-                  label: "نام و نام خانوادگی",
-                  onChanged: (value) => controller.model.name = value)),
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: ProfileTextInput(
-                  label: "رمز عبور دلخواه",
-                  onChanged: (value) => controller.model.password = value)),
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: ProfileTextInput(
-                  label: "تکرار رمز عبور",
-                  onChanged: (value) => controller.model.repassword = value)),
+          InkWell(
+              onTap: () => controller.emailFocusNode.requestFocus(),
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ProfileTextInput(
+                    focusNode: controller.emailFocusNode,
+                    label: "ایمیل",
+                    onChanged: (value) => controller.model.email = value,
+                  ))),
+          InkWell(
+              onTap: () => controller.phoneFocusNode.requestFocus(),
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ProfileTextInput(
+                      focusNode: controller.emailFocusNode,
+                      label: "موبایل",
+                      onChanged: (value) => controller.model.mobile = value))),
+          InkWell(
+              onTap: () => controller.nameFocusNode.requestFocus(),
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ProfileTextInput(
+                      focusNode: controller.nameFocusNode,
+                      label: "نام و نام خانوادگی",
+                      onChanged: (value) => controller.model.name = value))),
+          InkWell(
+              onTap: () => controller.passwordFocusNode.requestFocus(),
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ProfileTextInput(
+                      focusNode: controller.passwordFocusNode,
+                      label: "رمز عبور دلخواه",
+                      onChanged: (value) =>
+                          controller.model.password = value))),
+          InkWell(
+              onTap: () => controller.repasswordFocusNode.requestFocus(),
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ProfileTextInput(
+                      focusNode: controller.repasswordFocusNode,
+                      label: "تکرار رمز عبور",
+                      onChanged: (value) =>
+                          controller.model.repassword = value))),
           SizedBox(
             height: MediaQuery.sizeOf(context).height / 20,
           ),
@@ -58,9 +75,11 @@ class SingupScreen extends StatelessWidget {
           const Spacer(),
           InkWell(
             onTap: controller.sendData,
+            focusColor: Colors.cyan,
             child: Container(
-              width: MediaQuery.sizeOf(context).width,
+              width: MediaQuery.sizeOf(context).width / 2,
               height: MediaQuery.sizeOf(context).height / 13,
+              margin: const EdgeInsets.symmetric(horizontal: 10),
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15),

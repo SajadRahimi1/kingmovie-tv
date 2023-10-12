@@ -108,10 +108,10 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                   if (controller.sliderFocusNode.hasFocus) {
                     controller.moviePostion.value =
                         controller.moviePostion.toInt();
-                    await controller.player.pause();
+                    // await controller.player.pause();
                     await controller.player.seek(
                         Duration(seconds: controller.moviePostion.toInt()));
-                    await controller.player.play();
+                    // await controller.player.play();
                     controller.isSlider = false;
                   }
                 } else if (data.keyCode == 22) {
@@ -122,10 +122,10 @@ class _PlayMovieScreenState extends State<PlayMovieScreen> {
                   if (controller.sliderFocusNode.hasFocus) {
                     controller.moviePostion.value =
                         controller.moviePostion.toInt();
-                    await controller.player.pause();
+                    // await controller.player.pause();
                     await controller.player.seek(
                         Duration(seconds: controller.moviePostion.toInt()));
-                    await controller.player.play();
+                    // await controller.player.play();
                     controller.isSlider = false;
                   }
                 } else if (data.keyCode == 19) {

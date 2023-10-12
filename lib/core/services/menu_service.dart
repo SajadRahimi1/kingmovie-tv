@@ -34,10 +34,16 @@ void toLoginScreen() =>
 
 void loginTap() {
   Get.dialog(LoginDialog(
-    onLoginTap: () =>
-        Get.to(() => const LoginScreen(), transition: Transition.leftToRight),
-    onSingupTap: () =>
-        Get.to(() => const SingupScreen(), transition: Transition.leftToRight),
+    onLoginTap: () {
+      Get.back();
+      Get.back();
+      Get.to(() => const LoginScreen(), transition: Transition.leftToRight);
+    },
+    onSingupTap: () {
+      Get.back();
+      Get.back();
+      Get.to(() => const SingupScreen(), transition: Transition.leftToRight);
+    },
   ));
 }
 
@@ -45,6 +51,6 @@ void exit() {
   final GetStorage getStorage = GetStorage();
   GetStorage.init().then((value) {
     getStorage.remove('token');
-    SingletonClass.instance.user = null;    
+    SingletonClass.instance.user = null;
   });
 }

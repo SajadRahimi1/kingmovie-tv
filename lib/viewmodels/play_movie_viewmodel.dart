@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:king_movie/models/movie_model.dart';
-import 'package:king_movie/views/movie_detail/widgets/confirm_button.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 
@@ -30,11 +29,8 @@ class PlayMovieViewModel extends GetxController with StateMixin {
   // Create a [VideoController] to handle video output from [Player].
   late final controller = VideoController(player,
       configuration: const VideoControllerConfiguration(
-          // enableHardwareAcceleration: false,
+          enableHardwareAcceleration: false,
           ));
-
-  Rx<SubtitleViewConfiguration> subtitleViewConfiguration =
-      const SubtitleViewConfiguration().obs;
 
   final GetStorage getStorage = GetStorage();
   String token = '';
@@ -56,6 +52,7 @@ class PlayMovieViewModel extends GetxController with StateMixin {
       duration.value = event;
     });
 
+/*
     player.stream.position.listen((event) async {
       position.value = event;
       if (!isSlider) {
@@ -77,20 +74,21 @@ class PlayMovieViewModel extends GetxController with StateMixin {
         await player.seek(Duration(seconds: movieDuration ?? 0));
       }
     });
+  */
   }
 
   @override
   void dispose() async {
     super.dispose();
     if (timer != null) timer?.cancel();
-    await player.dispose();
+    await player.dispose(); 
   }
 
   Future<void> initVideo() async {
     if (downloadList != null && downloadList?.link != null) {
       moviePlayingId = downloadList?.link ?? "";
       moviePlayingId = moviePlayingId.split('/').last.split('?').first;
-      movieDuration = getStorage.read(moviePlayingId);
+      /*movieDuration = getStorage.read(moviePlayingId);
       print("movie duration:                             $movieDuration");
       if (movieDuration != null) {
         isSeek = await Get.defaultDialog<bool>(
@@ -103,12 +101,9 @@ class PlayMovieViewModel extends GetxController with StateMixin {
               cancel: const ConfirmButton(text: "خیر"),
             ) ??
             false;
-      }
+      }*/
       await player.open(Media(downloadList?.link ?? ""));
       isInitialVideo.value = true;
     }
   }
-
-  void setSubStyle(SubtitleViewConfiguration config) =>
-      subtitleViewConfiguration.value = config;
 }
